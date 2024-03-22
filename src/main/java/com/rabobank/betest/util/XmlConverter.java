@@ -1,8 +1,10 @@
 package com.rabobank.betest.util;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.rabobank.betest.exception.AppException;
 import java.io.InputStream;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 
 public class XmlConverter {
 
@@ -13,7 +15,7 @@ public class XmlConverter {
             return xmlMapper.readValue(
                     inputStream, xmlMapper.getTypeFactory().constructCollectionType(List.class, type));
         } catch (Exception e) {
-            throw new RuntimeException("Error processing XML file", e);
+            throw new AppException("Error processing XML file" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -4,10 +4,12 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import com.rabobank.betest.exception.AppException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 
 @Slf4j
 public class CsvConverter {
@@ -25,7 +27,8 @@ public class CsvConverter {
 
             return csvToBean.parse();
         } catch (Exception e) {
-            throw new RuntimeException("Error processing CSV file", e);
+            throw new AppException(
+                    "Error while processing csv file. " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
